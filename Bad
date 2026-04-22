@@ -1,0 +1,82 @@
+	SetProperty(Window, { Size = Settings.Size, Visible = true, Parent = Screen });
+	Animations:Open(Window, Settings.Transparency or 0)
+
+	--// Built-in Settings Tab
+	do
+		local SettingsTab = Options:AddTab({
+			Title = "Settings",
+			Icon = "rbxassetid://3926305904",
+			Section = nil
+		})
+
+		Options:AddSection({ Name = "UI Customization", Tab = SettingsTab })
+
+		-- UI Transparency Slider
+		Options:AddSlider({
+			Title = "UI Transparency",
+			Description = "Adjust how see-through the UI is",
+			MaxValue = 1,
+			AllowDecimals = true,
+			DecimalAmount = 2,
+			Tab = SettingsTab,
+			Callback = function(Value)
+				Options:SetSetting("Transparency", Value)
+			end
+		})
+
+		-- UI Blur Toggle
+		Options:AddToggle({
+			Title = "UI Blur",
+			Description = "Enable background blur behind the window",
+			Default = Settings.Blurring or false,
+			Tab = SettingsTab,
+			Callback = function(Value)
+				Options:SetSetting("Blur", Value)
+			end
+		})
+
+		-- Theme Toggle (Dark/Light)
+		local LightTheme = {
+			Primary = Color3.fromRGB(245, 245, 245),
+			Secondary = Color3.fromRGB(235, 235, 235),
+			Component = Color3.fromRGB(225, 225, 225),
+			Interactables = Color3.fromRGB(215, 215, 215),
+			Tab = Color3.fromRGB(60, 60, 60),
+			Title = Color3.fromRGB(20, 20, 20),
+			Description = Color3.fromRGB(80, 80, 80),
+			Shadow = Color3.fromRGB(200, 200, 200),
+			Outline = Color3.fromRGB(180, 180, 180),
+			Icon = Color3.fromRGB(40, 40, 40),
+		}
+
+		Options:AddToggle({
+			Title = "Light Mode",
+			Description = "Switch between dark and light theme",
+			Default = false,
+			Tab = SettingsTab,
+			Callback = function(Value)
+				if Value then
+					Options:SetSetting("Theme", LightTheme)
+				else
+					Options:SetSetting("Theme", nil)
+				end
+			end
+		})
+
+		Options:AddSection({ Name = "Keybinds", Tab = SettingsTab })
+
+		-- Custom Toggle Keybind
+		Options:AddKeybind({
+			Title = "Toggle UI Keybind",
+			Description = "Press this key to open/close the UI",
+			Tab = SettingsTab,
+			Callback = function(Key)
+				-- Keybind is auto-handled by the library, this is just for feedback
+			end
+		})
+	end
+
+	return Options
+end
+
+return Library
